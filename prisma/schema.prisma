@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model biases {
+  id           Int        @id @default(autoincrement())
+  userid_      Int        @map("“userid”")
+  name         String
+  nickname     String
+  birthdate    DateTime   @db.Date
+  affiliations String
+  imageurl_    String     @map("“imageurl”") @db.VarChar(2048)
+  users        users      @relation(fields: [userid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  facts        facts[]
+  links        links[]
+  memories     memories[]
+  quotes       quotes[]
+}
+
+model facts {
+  id        Int      @id @default(autoincrement())
+  biasid_   Int      @map("“biasid”")
+  title     String
+  fact      String
+  imageurl_ String?  @map("“imageurl”") @db.VarChar(2048)
+  date      DateTime @db.Date
+  biases    biases   @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model links {
+  id          Int    @id @default(autoincrement())
+  biasid_     Int    @map("“biasid”")
+  title       String
+  site        String
+  description String
+  url         String @db.VarChar(2048)
+  type        tag
+  biases      biases @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model memories {
+  id       Int      @id @default(autoincrement())
+  biasid_  Int      @map("“biasid”")
+  date     DateTime @db.Date
+  memory   String
+  feelings String
+  url1_    String?  @map("“url1”") @db.VarChar(2048)
+  url2_    String?  @map("“url2”") @db.VarChar(2048)
+  url3_    String?  @map("“url3”") @db.VarChar(2048)
+  biases   biases   @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model quotes {
+  id      Int       @id @default(autoincrement())
+  biasid_ Int       @map("“biasid”")
+  date    DateTime? @db.Date
+  quote   String
+  context String
+  tag     String?   @db.VarChar(20)
+  biases  biases    @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model sessions {
+  id      Int    @id @default(autoincrement())
+  userid_ Int    @unique @map("“userid”")
+  token   String @unique
+  users   users  @relation(fields: [userid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id        Int       @id @default(autoincrement())
+  nickname  String    @unique
+  imageurl_ String    @map("“imageurl”") @db.VarChar(2048)
+  email     String    @unique @db.VarChar(255)
+  password  String?   @db.VarChar(255)
+  biases    biases[]
+  sessions  sessions?
+}
+
+enum tag {
+  VIDEO
+  PHOTO
+  TEXT
+}
