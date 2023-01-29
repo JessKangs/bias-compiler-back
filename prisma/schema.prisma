@@ -8,28 +8,27 @@ datasource db {
 }
 
 model biases {
-  id           Int        @id @default(autoincrement())
-  userid_      Int        @map("“userid”")
+  id           Int           @id @default(autoincrement())
+  userid_      Int           @map("“userid”")
   name         String
   nickname     String
-  birthdate    DateTime   @db.Date
+  birthdate    DateTime      @db.Date
   affiliations String
-  imageurl_    String     @map("“imageurl”") @db.VarChar(2048)
-  users        users      @relation(fields: [userid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  imageurl_    String        @map("“imageurl”") @db.VarChar(2048)
+  users        users         @relation(fields: [userid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
   facts        facts[]
   links        links[]
   memories     memories[]
+  my_thoughts  my_thoughts[]
   quotes       quotes[]
 }
 
 model facts {
-  id        Int      @id @default(autoincrement())
-  biasid_   Int      @map("“biasid”")
-  title     String
-  fact      String
-  imageurl_ String?  @map("“imageurl”") @db.VarChar(2048)
-  date      DateTime @db.Date
-  biases    biases   @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id      Int      @id @default(autoincrement())
+  biasid_ Int      @map("“biasid”")
+  fact    String
+  date    DateTime @db.Date
+  biases  biases   @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model links {
@@ -39,30 +38,43 @@ model links {
   site        String
   description String
   url         String @db.VarChar(2048)
-  type        tag
+  tag         String
   biases      biases @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model memories {
   id       Int      @id @default(autoincrement())
   biasid_  Int      @map("“biasid”")
+  title    String
   date     DateTime @db.Date
   memory   String
-  feelings String
+  feelings String[]
   url1_    String?  @map("“url1”") @db.VarChar(2048)
   url2_    String?  @map("“url2”") @db.VarChar(2048)
   url3_    String?  @map("“url3”") @db.VarChar(2048)
   biases   biases   @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
+model my_thoughts {
+  id        Int      @id @default(autoincrement())
+  biasid_   Int      @map("“biasid”")
+  title     String
+  note      String   @db.VarChar(350)
+  imageurl_ String?  @map("“imageurl”") @db.VarChar(2048)
+  date      DateTime @db.Date
+  biases    biases   @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model quotes {
-  id      Int       @id @default(autoincrement())
-  biasid_ Int       @map("“biasid”")
-  date    DateTime? @db.Date
-  quote   String
-  context String
-  tag     String?   @db.VarChar(20)
-  biases  biases    @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id        Int       @id @default(autoincrement())
+  biasid_   Int       @map("“biasid”")
+  quote     String
+  context   String
+  imageurl_ String?   @map("“imageurl”") @db.VarChar(2048)
+  url       String?   @db.VarChar(2048)
+  date      DateTime? @db.Date
+  tag       String
+  biases    biases    @relation(fields: [biasid_], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model sessions {
@@ -80,10 +92,4 @@ model users {
   password  String?   @db.VarChar(255)
   biases    biases[]
   sessions  sessions?
-}
-
-enum tag {
-  VIDEO
-  PHOTO
-  TEXT
 }

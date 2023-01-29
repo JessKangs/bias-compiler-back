@@ -7,6 +7,11 @@ loadEnv();
 
 import { 
     authenticationRouter,
+    biasMemoriesRouter,
+    biasQuotesRouter,
+    myThoughtsRouter,
+    biasFactsRouter,
+    biasLinksRouter,
     addBiasRouter,
     userRouter
  } from "./routers";
@@ -16,6 +21,11 @@ app
 .use(cors())
 .use(express.json())
 .use("/", authenticationRouter)
+.use("/", biasMemoriesRouter)
+.use("/", biasQuotesRouter)
+.use("/", myThoughtsRouter)
+.use("/", biasFactsRouter)
+.use("/", biasLinksRouter)
 .use("/", addBiasRouter)
 .use("/", userRouter)
 

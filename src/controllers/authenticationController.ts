@@ -21,7 +21,7 @@ export async function createSignIn(req: Request, res: Response) {
     try {
         
         const response = await authenticationService.login( email, password );
-        console.log(response);
+        
         return res.status(httpStatus.OK).send(response);
         
     } catch(error:any) {
