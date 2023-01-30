@@ -10,7 +10,7 @@ async function addLink(
     ) {
     return prisma.links.create({
         data: {
-            biasid_:biasId,
+            biasid:biasId,
             title,
             site,
             description,
@@ -25,7 +25,7 @@ async function listLinks(
     ) {
     return prisma.links.findMany({
         where: {
-            biasid_:biasId
+            biasid:biasId
             }
     })
 }
@@ -36,7 +36,7 @@ async function listLinksByTag(
     ) {
     return prisma.links.findMany({
         where: {
-            biasid_:biasId,
+            biasid:biasId,
             tag
             }
     })

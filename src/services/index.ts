@@ -1,5 +1,4 @@
 export * from "./authentication-service";
-export * from "./add-bias-service";
 export * from "./memories-service";
 export * from "./thoughts-service";
 export * from "./quotes-service";

@@ -9,10 +9,10 @@ async function addThought(
     ) {
     return prisma.my_thoughts.create({
         data: {
-            biasid_:biasId,
+            biasid:biasId,
             title,
             note,
-            imageurl_:imageUrl,
+            imageurl:imageUrl,
             date
             }
     })
@@ -23,7 +23,7 @@ async function listThoughts(
     ) {
     return prisma.my_thoughts.findMany({
         where: {
-            biasid_:biasId
+            biasid:biasId
             }
     })
 }
@@ -34,7 +34,7 @@ async function listThoughtsByTitle(
     ) {
     return prisma.my_thoughts.findMany({
         where: {
-            biasid_:biasId,
+            biasid:biasId,
             title
             }
     })

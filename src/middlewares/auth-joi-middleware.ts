@@ -1,19 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import joi from 'joi';
 import { requestError } from '../errors/request-error';
+import { signUpSchema, loginSchema } from '../schemas/auth-schema';
 
-const loginSchema = joi.object({
-    email: joi.string().email().required(),
-    password: joi.required()
-})
-
-const signUpSchema = joi.object({
-    nickname: joi.string().required(),
-    imageUrl: joi.string().required(),
-    email: joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-    password: joi.string().min(10)
-})
 
 function signInIsValid(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;

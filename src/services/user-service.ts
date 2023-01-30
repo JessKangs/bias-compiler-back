@@ -10,6 +10,25 @@ async function getProfileData(id:number ){
     return user;
 }
 
+async function addBias(
+    userId: number,
+    name: string,
+    nickname: string,
+    birthdate: Date,
+    affiliations: string,
+    imageUrl: string
+    ){
+   
+    return userRepository.addBias(
+            userId,
+            name,
+            nickname,
+            birthdate,
+            affiliations,
+            imageUrl
+    );
+}
+
 async function getBiasesByUserId(id:number ){
    
     const biases = userRepository.findBiasesByUserId(id);
@@ -21,6 +40,7 @@ async function getBiasesByUserId(id:number ){
 
 
 const userService = {
+    addBias,
     getProfileData,
     getBiasesByUserId
   };

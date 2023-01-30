@@ -9,12 +9,13 @@ async function addQuote(
     date: Date,
     tag: string
     ) {
+    
     return prisma.quotes.create({
         data: {
-            biasid_:biasId,
+            biasid:biasId,
             quote,
             context,
-            imageurl_: imageUrl,
+            imageurl: imageUrl,
             url,
             date,
             tag
@@ -27,7 +28,7 @@ async function listQuotes(
     ) {
     return prisma.quotes.findMany({
         where: {
-            biasid_:biasId
+            biasid:biasId
             }
     })
 }
@@ -38,7 +39,7 @@ async function listQuotesByTag(
     ) {
     return prisma.quotes.findMany({
         where: {
-            biasid_:biasId,
+            biasid:biasId,
             tag
             }
     })

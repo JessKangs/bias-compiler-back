@@ -17,7 +17,7 @@ async function createUser(
     return prisma.users.create({
         data: {
             nickname,
-            imageurl_:imageUrl,
+            imageurl:imageUrl,
             email,
             password
         }
@@ -27,14 +27,14 @@ async function createUser(
 async function upsertSession(userId: number, token: string){
     return prisma.sessions.upsert({
         where: {
-            userid_: userId
+            userid: userId
         },
         create: {
-            userid_:userId,
+            userid:userId,
             token
         },
         update: {
-            userid_:userId,
+            userid:userId,
             token
         }
     });

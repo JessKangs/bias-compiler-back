@@ -11,7 +11,7 @@ export async function addQuote(req: Request, res: Response){
         date,
         tag } = req.body;
     const {  biasId } = req.params;
-   
+      
     try {
         const response = await quotesService.addQuote(
         Number(biasId), 

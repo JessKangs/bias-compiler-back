@@ -4,6 +4,5 @@ export * from "./bias-quotes-router";
 export * from "./my-thoughts-router";
 export * from "./bias-facts-router";
 export * from "./bias-links-router";
-export * from "./add-bias-router";
 export * from "./user-router";
 

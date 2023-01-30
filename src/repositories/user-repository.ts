@@ -8,15 +8,36 @@ async function findUserById(id: number) {
     });
 }
 
+async function addBias(
+    userId: number,
+    name: string,
+    nickname: string,
+    birthdate: Date,
+    affiliations: string,
+    imageUrl: string
+    ) {
+    return prisma.biases.create({
+        data: {
+        userid:userId,
+        name,
+        nickname,
+        birthdate,
+        affiliations,
+        imageurl: imageUrl
+        }
+    });
+}
+
 async function findBiasesByUserId(userId: number) {
     return prisma.biases.findMany({
         where: {
-            userid_:userId
+            userid:userId
         }
     });
 }
 
 const userRepository = {
+    addBias,
     findUserById,
     findBiasesByUserId
 }

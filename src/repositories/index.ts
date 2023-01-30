@@ -1,5 +1,4 @@
 export * from "./authentication-repository"
-export * from "./add-bias-repository"
 export * from "./memories-repository"
 export * from "./thoughts-repository"
 export * from "./links-repository"

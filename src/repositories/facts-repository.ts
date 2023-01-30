@@ -7,7 +7,7 @@ async function addFact(
     ) {
     return prisma.facts.create({
         data: {
-            biasid_:biasId,
+            biasid:biasId,
             fact,
             date
             }
@@ -19,7 +19,7 @@ async function listFacts(
     ) {
     return prisma.facts.findMany({
         where: {
-            biasid_:biasId
+            biasid:biasId
             }
     })
 }

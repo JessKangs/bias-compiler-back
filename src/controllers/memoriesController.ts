@@ -13,7 +13,7 @@ export async function addMemory(req: Request, res: Response){
         url3 
     } = req.body;
     const {  biasId } = req.params;
-   
+   console.log('a')
     try {
         const response = await memoriesService.addMemory(
         Number(biasId), 
@@ -59,7 +59,7 @@ export async function listMemoriesByDate(req: Request, res: Response){
 
     } catch(error) {
        console.log(error)
-        return res.sendStatus(httpStatus.BAD_REQUEST)
+       return res.sendStatus(httpStatus.BAD_REQUEST)
     }
 }
 

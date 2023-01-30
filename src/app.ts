@@ -12,7 +12,6 @@ import {
     myThoughtsRouter,
     biasFactsRouter,
     biasLinksRouter,
-    addBiasRouter,
     userRouter
  } from "./routers";
 
@@ -26,7 +25,6 @@ app
 .use("/", myThoughtsRouter)
 .use("/", biasFactsRouter)
 .use("/", biasLinksRouter)
-.use("/", addBiasRouter)
 .use("/", userRouter)
 
 export function init(): Promise<Express>{

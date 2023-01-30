@@ -12,14 +12,14 @@ async function addMemory(
     ) {
     return prisma.memories.create({
         data: {
-            biasid_:biasId,
+            biasid:biasId,
             title,
             date,
             memory,
             feelings,
-            url1_:url1,
-            url2_:url2,
-            url3_:url3
+            url1:url1,
+            url2:url2,
+            url3:url3
             }
     })
 }
@@ -29,7 +29,7 @@ async function listMemories(
     ) {
     return prisma.memories.findMany({
         where: {
-            biasid_:biasId
+            biasid:biasId
             }
     })
 }
@@ -40,7 +40,7 @@ async function listMemoriesByDate(
     ) {
     return prisma.memories.findMany({
         where: {
-            biasid_:biasId,
+            biasid:biasId,
             date
             }
     })
@@ -52,7 +52,7 @@ async function listMemoriesByTitle(
     ) {
     return prisma.memories.findMany({
         where: {
-            biasid_:biasId,
+            biasid:biasId,
             title
             }
     })
