@@ -4,9 +4,9 @@ import { requestError } from '../errors/request-error';
 import { addLinkBody } from '../schemas/links-schema';
 
 function isLinkBodyValid(req: Request, res: Response, next: NextFunction) {
-    const { title, site, description, url, tag } = req.body;
+    const { title, site, url, tag } = req.body;
 
-    const body = { title, site, description, url, tag }; 
+    const body = { title, site, url, tag }; 
 
     if(!body) throw requestError(httpStatus.BAD_REQUEST, "cannot add link with empty body")
 
