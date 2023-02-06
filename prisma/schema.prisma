@@ -32,14 +32,13 @@ model facts {
 }
 
 model links {
-  id          Int    @id @default(autoincrement())
-  biasid      Int
-  title       String
-  site        String
-  description String
-  url         String @db.VarChar(2048)
-  tag         String
-  biases      biases @relation(fields: [biasid], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id     Int    @id @default(autoincrement())
+  biasid Int
+  title  String
+  site   String
+  url    String @db.VarChar(2048)
+  tag    String
+  biases biases @relation(fields: [biasid], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model memories {

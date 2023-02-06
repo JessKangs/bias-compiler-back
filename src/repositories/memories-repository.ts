@@ -17,9 +17,9 @@ async function addMemory(
             date,
             memory,
             feelings,
-            url1:url1,
-            url2:url2,
-            url3:url3
+            url1,
+            url2,
+            url3
             }
     })
 }

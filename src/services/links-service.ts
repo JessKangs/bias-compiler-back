@@ -4,7 +4,6 @@ async function addLink(
     biasId: number,
     title: string,
     site: string,
-    description: string,
     url: string,
     tag: string
     ){
@@ -13,7 +12,6 @@ async function addLink(
         biasId,
         title,
         site,
-        description,
         url,
         tag
     );

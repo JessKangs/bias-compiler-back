@@ -13,7 +13,7 @@ export async function addMemory(req: Request, res: Response){
         url3 
     } = req.body;
     const {  biasId } = req.params;
-   console.log('a')
+
     try {
         const response = await memoriesService.addMemory(
         Number(biasId), 
@@ -29,8 +29,7 @@ export async function addMemory(req: Request, res: Response){
         return res.status(httpStatus.CREATED).send(response);
 
     } catch(error) {
-        
-       console.log(error)
+
         return res.sendStatus(httpStatus.BAD_REQUEST)
     }
 }
@@ -40,7 +39,7 @@ export async function listMemories(req: Request, res: Response){
    
     try {
         const response = await memoriesService.listMemories(Number(biasId))
-        
+
         return res.status(httpStatus.OK).send(response);
 
     } catch(error) {

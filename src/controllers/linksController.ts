@@ -6,7 +6,6 @@ export async function addLink(req: Request, res: Response){
     const { 
         title,
         site,
-        description,
         url,
         tag } = req.body;
     const {  biasId } = req.params;
@@ -16,7 +15,6 @@ export async function addLink(req: Request, res: Response){
         Number(biasId), 
         title,
         site,
-        description,
         url,
         tag);
 
