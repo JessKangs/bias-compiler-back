@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,56 +62,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createSignIn = exports.createSignUp = void 0;
+exports.authenticateToken = void 0;
 var http_status_1 = __importDefault(require("http-status"));
-var services_1 = require("../services");
-function createSignUp(req, res) {
+var jwt = __importStar(require("jsonwebtoken"));
+var errors_1 = require("../errors");
+var config_1 = require("../config");
+function authenticateToken(req, res, next) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, nickname, imageUrl, email, password, response, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var authHeader, token, userId, session, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = req.body, nickname = _a.nickname, imageUrl = _a.imageUrl, email = _a.email, password = _a.password;
-                    _b.label = 1;
+                    authHeader = req.header("Authorization");
+                    if (!authHeader)
+                        return [2 /*return*/, generateUnauthorizedResponse(res)];
+                    token = authHeader.split(" ")[1];
+                    if (!token)
+                        return [2 /*return*/, generateUnauthorizedResponse(res)];
+                    _a.label = 1;
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.criarRegistro(nickname, imageUrl, email, password)];
+                    _a.trys.push([1, 3, , 4]);
+                    userId = jwt.verify(token, process.env.JWT_SECRET).userId;
+                    return [4 /*yield*/, config_1.prisma.sessions.findFirst({
+                            where: {
+                                token: token
+                            }
+                        })];
                 case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].CREATED).send(response)];
+                    session = _a.sent();
+                    if (!session)
+                        return [2 /*return*/, generateUnauthorizedResponse(res)];
+                    req.userId = userId;
+                    //TODO mudar aqui
+                    return [2 /*return*/, next()];
                 case 3:
-                    error_1 = _b.sent();
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
+                    err_1 = _a.sent();
+                    return [2 /*return*/, generateUnauthorizedResponse(res)];
                 case 4: return [2 /*return*/];
             }
         });
     });
 }
-exports.createSignUp = createSignUp;
-function createSignIn(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, email, password, response, error_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = req.body, email = _a.email, password = _a.password;
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.login(email, password)];
-                case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
-                case 3:
-                    error_2 = _b.sent();
-                    console.log("a");
-                    if (error_2.name === "RequestError")
-                        return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
-                    console.log(error_2);
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].NOT_FOUND)];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
+exports.authenticateToken = authenticateToken;
+function generateUnauthorizedResponse(res) {
+    res.status(http_status_1["default"].UNAUTHORIZED).send((0, errors_1.unauthorizedError)());
 }
-exports.createSignIn = createSignIn;

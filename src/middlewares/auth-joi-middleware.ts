@@ -13,7 +13,7 @@ function signInIsValid(req: Request, res: Response, next: NextFunction) {
     
     if(validation.error) {
         
-        res.status(httpStatus.UNPROCESSABLE_ENTITY).send(validation.error)
+        res.status(httpStatus.UNPROCESSABLE_ENTITY).send(validation.error.message)
         
     } else {
         next()
@@ -22,11 +22,11 @@ function signInIsValid(req: Request, res: Response, next: NextFunction) {
 
 function signUpIsValid(req: Request, res: Response, next: NextFunction) {
     const { nickname, imageUrl, email, password } = req.body;
-
+ 
     const validation = signUpSchema.validate({ nickname, imageUrl, email, password }, { abortEarly: true })
 
     if (validation.error) {
-        res.status(httpStatus.UNPROCESSABLE_ENTITY).send(validation.error)
+        res.status(httpStatus.UNPROCESSABLE_ENTITY).send(validation.error.message)
     } else {
         next()
     }

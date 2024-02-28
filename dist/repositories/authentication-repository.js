@@ -37,11 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.authenticationRepository = void 0;
-var database_1 = require("../config/database");
+var config_1 = require("../config");
 function findByEmail(email) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            return [2 /*return*/, database_1.prisma.users.findFirst({
+            return [2 /*return*/, config_1.prisma.users.findFirst({
                     where: {
                         email: email
                     }
@@ -49,13 +49,13 @@ function findByEmail(email) {
         });
     });
 }
-function createUser(email, password, nickname, imageUrl) {
+function createUser(nickname, imageUrl, email, password) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            return [2 /*return*/, database_1.prisma.users.create({
+            return [2 /*return*/, config_1.prisma.users.create({
                     data: {
                         nickname: nickname,
-                        imageurl_: imageUrl,
+                        imageurl: imageUrl,
                         email: email,
                         password: password
                     }
@@ -66,16 +66,16 @@ function createUser(email, password, nickname, imageUrl) {
 function upsertSession(userId, token) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            return [2 /*return*/, database_1.prisma.sessions.upsert({
+            return [2 /*return*/, config_1.prisma.sessions.upsert({
                     where: {
-                        userid_: userId
+                        userid: userId
                     },
                     create: {
-                        userid_: userId,
+                        userid: userId,
                         token: token
                     },
                     update: {
-                        userid_: userId,
+                        userid: userId,
                         token: token
                     }
                 })];

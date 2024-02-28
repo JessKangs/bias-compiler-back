@@ -50,7 +50,13 @@ var app = (0, express_1["default"])();
 app
     .use((0, cors_1["default"])())
     .use(express_1["default"].json())
-    .use("/", routers_1.authenticationRouter);
+    .use("/", routers_1.authenticationRouter)
+    .use("/", routers_1.biasMemoriesRouter)
+    .use("/", routers_1.biasQuotesRouter)
+    .use("/", routers_1.myThoughtsRouter)
+    .use("/", routers_1.biasFactsRouter)
+    .use("/", routers_1.biasLinksRouter)
+    .use("/", routers_1.userRouter);
 function init() {
     (0, database_1.connectDb)();
     return Promise.resolve(app);

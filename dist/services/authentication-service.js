@@ -39,56 +39,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createSignIn = exports.createSignUp = void 0;
+exports.authenticationService = void 0;
+var repositories_1 = require("../repositories");
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var errors_1 = require("../errors");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var http_status_1 = __importDefault(require("http-status"));
-var services_1 = require("../services");
-function createSignUp(req, res) {
+function criarRegistro(nickname, imageUrl, email, password) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, nickname, imageUrl, email, password, response, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = req.body, nickname = _a.nickname, imageUrl = _a.imageUrl, email = _a.email, password = _a.password;
-                    _b.label = 1;
+        var userExists, hashedPassword, user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, repositories_1.authenticationRepository.findByEmail(email)];
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.criarRegistro(nickname, imageUrl, email, password)];
+                    userExists = _a.sent();
+                    if (userExists)
+                        throw (0, errors_1.conflictError)("conflict error");
+                    return [4 /*yield*/, bcrypt_1["default"].hash(password, 12)];
                 case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].CREATED).send(response)];
+                    hashedPassword = _a.sent();
+                    return [4 /*yield*/, repositories_1.authenticationRepository.createUser(nickname, imageUrl, email, hashedPassword)];
                 case 3:
-                    error_1 = _b.sent();
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
-                case 4: return [2 /*return*/];
+                    user = _a.sent();
+                    return [2 /*return*/, user];
             }
         });
     });
 }
-exports.createSignUp = createSignUp;
-function createSignIn(req, res) {
+function login(email, password) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, email, password, response, error_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var user, isPasswordValid, token, session;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = req.body, email = _a.email, password = _a.password;
-                    _b.label = 1;
+                    if (!email || !password)
+                        throw (0, errors_1.requestError)(http_status_1["default"].BAD_REQUEST, "cannot login with empty body");
+                    return [4 /*yield*/, repositories_1.authenticationRepository.findByEmail(email)];
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.login(email, password)];
+                    user = _a.sent();
+                    if (!user)
+                        throw (0, errors_1.notFoundError)();
+                    return [4 /*yield*/, bcrypt_1["default"].compare(password, user.password)];
                 case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
+                    isPasswordValid = _a.sent();
+                    if (!isPasswordValid)
+                        throw (0, errors_1.invalidCredentialsError)();
+                    token = jsonwebtoken_1["default"].sign({ userId: user.id }, process.env.JWT_SECRET);
+                    return [4 /*yield*/, repositories_1.authenticationRepository.upsertSession(user.id, token)];
                 case 3:
-                    error_2 = _b.sent();
-                    console.log("a");
-                    if (error_2.name === "RequestError")
-                        return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
-                    console.log(error_2);
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].NOT_FOUND)];
-                case 4: return [2 /*return*/];
+                    session = _a.sent();
+                    return [2 /*return*/, session];
             }
         });
     });
 }
-exports.createSignIn = createSignIn;
+var authenticationService = {
+    criarRegistro: criarRegistro,
+    login: login
+};
+exports.authenticationService = authenticationService;

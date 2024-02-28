@@ -35,60 +35,42 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
-exports.createSignIn = exports.createSignUp = void 0;
-var http_status_1 = __importDefault(require("http-status"));
-var services_1 = require("../services");
-function createSignUp(req, res) {
+exports.userService = void 0;
+var errors_1 = require("../errors");
+var user_repository_1 = require("../repositories/user-repository");
+function getProfileData(id) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, nickname, imageUrl, email, password, response, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = req.body, nickname = _a.nickname, imageUrl = _a.imageUrl, email = _a.email, password = _a.password;
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.criarRegistro(nickname, imageUrl, email, password)];
-                case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].CREATED).send(response)];
-                case 3:
-                    error_1 = _b.sent();
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
-                case 4: return [2 /*return*/];
-            }
+        var user;
+        return __generator(this, function (_a) {
+            user = user_repository_1.userRepository.findUserById(id);
+            if (!user)
+                throw (0, errors_1.notFoundError)();
+            return [2 /*return*/, user];
         });
     });
 }
-exports.createSignUp = createSignUp;
-function createSignIn(req, res) {
+function addBias(userId, name, nickname, birthdate, affiliations, imageUrl) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, email, password, response, error_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = req.body, email = _a.email, password = _a.password;
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.login(email, password)];
-                case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
-                case 3:
-                    error_2 = _b.sent();
-                    console.log("a");
-                    if (error_2.name === "RequestError")
-                        return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
-                    console.log(error_2);
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].NOT_FOUND)];
-                case 4: return [2 /*return*/];
-            }
+        return __generator(this, function (_a) {
+            return [2 /*return*/, user_repository_1.userRepository.addBias(userId, name, nickname, birthdate, affiliations, imageUrl)];
         });
     });
 }
-exports.createSignIn = createSignIn;
+function getBiasesByUserId(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var biases;
+        return __generator(this, function (_a) {
+            biases = user_repository_1.userRepository.findBiasesByUserId(id);
+            if (!biases)
+                throw (0, errors_1.notFoundError)();
+            return [2 /*return*/, biases];
+        });
+    });
+}
+var userService = {
+    addBias: addBias,
+    getProfileData: getProfileData,
+    getBiasesByUserId: getBiasesByUserId
+};
+exports.userService = userService;

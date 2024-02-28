@@ -15,3 +15,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 exports.__esModule = true;
 __exportStar(require("./authentication-repository"), exports);
+__exportStar(require("./memories-repository"), exports);
+__exportStar(require("./thoughts-repository"), exports);
+__exportStar(require("./links-repository"), exports);
+__exportStar(require("./facts-repository"), exports);
+__exportStar(require("./quote-repository"), exports);
+__exportStar(require("./user-repository"), exports);

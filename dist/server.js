@@ -24,7 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 exports.__esModule = true;
 var app_1 = __importStar(require("./app"));
-var port = process.env.PORT;
+var port = process.env.PORT || 4001;
 (0, app_1.init)().then(function () {
     app_1["default"].listen(port, function () {
         console.log("Magic happens in ".concat(port));

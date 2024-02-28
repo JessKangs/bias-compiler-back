@@ -39,56 +39,79 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createSignIn = exports.createSignUp = void 0;
+exports.listQuotesByTag = exports.listQuotes = exports.addQuote = void 0;
 var http_status_1 = __importDefault(require("http-status"));
-var services_1 = require("../services");
-function createSignUp(req, res) {
+var quotes_service_1 = __importDefault(require("../services/quotes-service"));
+function addQuote(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, nickname, imageUrl, email, password, response, error_1;
+        var _a, quote, context, imageUrl, url, date, tag, biasId, response, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _a = req.body, nickname = _a.nickname, imageUrl = _a.imageUrl, email = _a.email, password = _a.password;
+                    _a = req.body, quote = _a.quote, context = _a.context, imageUrl = _a.imageUrl, url = _a.url, date = _a.date, tag = _a.tag;
+                    biasId = req.params.biasId;
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.criarRegistro(nickname, imageUrl, email, password)];
+                    return [4 /*yield*/, quotes_service_1["default"].addQuote(Number(biasId), quote, context, imageUrl, url, new Date(date), tag)];
                 case 2:
                     response = _b.sent();
                     return [2 /*return*/, res.status(http_status_1["default"].CREATED).send(response)];
                 case 3:
                     error_1 = _b.sent();
+                    console.log(error_1);
                     return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
                 case 4: return [2 /*return*/];
             }
         });
     });
 }
-exports.createSignUp = createSignUp;
-function createSignIn(req, res) {
+exports.addQuote = addQuote;
+function listQuotes(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, email, password, response, error_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var biasId, response, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = req.body, email = _a.email, password = _a.password;
-                    _b.label = 1;
+                    biasId = req.params.biasId;
+                    _a.label = 1;
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.login(email, password)];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, quotes_service_1["default"].listQuotes(Number(biasId))];
                 case 2:
-                    response = _b.sent();
+                    response = _a.sent();
                     return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
                 case 3:
-                    error_2 = _b.sent();
-                    console.log("a");
-                    if (error_2.name === "RequestError")
-                        return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
+                    error_2 = _a.sent();
                     console.log(error_2);
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].NOT_FOUND)];
+                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
                 case 4: return [2 /*return*/];
             }
         });
     });
 }
-exports.createSignIn = createSignIn;
+exports.listQuotes = listQuotes;
+function listQuotesByTag(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, biasId, tag, response, error_3;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = req.params, biasId = _a.biasId, tag = _a.tag;
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, quotes_service_1["default"].listQuoteByTag(Number(biasId), tag)];
+                case 2:
+                    response = _b.sent();
+                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
+                case 3:
+                    error_3 = _b.sent();
+                    console.log(error_3);
+                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.listQuotesByTag = listQuotesByTag;

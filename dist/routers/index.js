@@ -15,3 +15,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 exports.__esModule = true;
 __exportStar(require("./authentication-router"), exports);
+__exportStar(require("./bias-memories-router"), exports);
+__exportStar(require("./bias-quotes-router"), exports);
+__exportStar(require("./my-thoughts-router"), exports);
+__exportStar(require("./bias-facts-router"), exports);
+__exportStar(require("./bias-links-router"), exports);
+__exportStar(require("./user-router"), exports);

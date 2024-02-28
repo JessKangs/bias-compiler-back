@@ -39,56 +39,79 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createSignIn = exports.createSignUp = void 0;
+exports.findBiasesByUserId = exports.addBias = exports.findUserById = void 0;
 var http_status_1 = __importDefault(require("http-status"));
 var services_1 = require("../services");
-function createSignUp(req, res) {
+function findUserById(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, nickname, imageUrl, email, password, response, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var userId, response, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = req.body, nickname = _a.nickname, imageUrl = _a.imageUrl, email = _a.email, password = _a.password;
-                    _b.label = 1;
+                    userId = req.params.userId;
+                    _a.label = 1;
                 case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.criarRegistro(nickname, imageUrl, email, password)];
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, services_1.userService.getProfileData(Number(userId))];
                 case 2:
-                    response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].CREATED).send(response)];
+                    response = _a.sent();
+                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
                 case 3:
-                    error_1 = _b.sent();
+                    error_1 = _a.sent();
+                    console.log(error_1);
                     return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
                 case 4: return [2 /*return*/];
             }
         });
     });
 }
-exports.createSignUp = createSignUp;
-function createSignIn(req, res) {
+exports.findUserById = findUserById;
+function addBias(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, email, password, response, error_2;
+        var _a, name, nickname, birthdate, affiliations, imageUrl, userId, response, error_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _a = req.body, email = _a.email, password = _a.password;
+                    _a = req.body, name = _a.name, nickname = _a.nickname, birthdate = _a.birthdate, affiliations = _a.affiliations, imageUrl = _a.imageUrl;
+                    userId = req.params.userId;
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, services_1.authenticationService.login(email, password)];
+                    return [4 /*yield*/, services_1.userService.addBias(Number(userId), name, nickname, new Date(birthdate), affiliations, imageUrl)];
                 case 2:
                     response = _b.sent();
-                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
+                    return [2 /*return*/, res.status(http_status_1["default"].CREATED).send(response)];
                 case 3:
                     error_2 = _b.sent();
-                    console.log("a");
-                    if (error_2.name === "RequestError")
-                        return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
                     console.log(error_2);
-                    return [2 /*return*/, res.sendStatus(http_status_1["default"].NOT_FOUND)];
+                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
                 case 4: return [2 /*return*/];
             }
         });
     });
 }
-exports.createSignIn = createSignIn;
+exports.addBias = addBias;
+function findBiasesByUserId(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var userId, response, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userId = req.params.userId;
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, services_1.userService.getBiasesByUserId(Number(userId))];
+                case 2:
+                    response = _a.sent();
+                    return [2 /*return*/, res.status(http_status_1["default"].OK).send(response)];
+                case 3:
+                    error_3 = _a.sent();
+                    console.log(error_3);
+                    return [2 /*return*/, res.sendStatus(http_status_1["default"].BAD_REQUEST)];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.findBiasesByUserId = findBiasesByUserId;

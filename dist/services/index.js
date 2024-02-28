@@ -14,4 +14,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 exports.__esModule = true;
-__exportStar(require("./authenticationService"), exports);
+__exportStar(require("./authentication-service"), exports);
+__exportStar(require("./memories-service"), exports);
+__exportStar(require("./thoughts-service"), exports);
+__exportStar(require("./quotes-service"), exports);
+__exportStar(require("./facts-service"), exports);
+__exportStar(require("./links-service"), exports);
+__exportStar(require("./user-service"), exports);
